@@ -1,22 +1,31 @@
 
-var form = document.querySelector('form');
-var toDoList = document.querySelector('ul');
-var clearButton = document.getElementById('clear');
-var input = document.querySelector('#user-todo');
-var todosArray = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
+function submitForm(){
 
-localStorage.setItem('todos', JSON.stringify(todosArray));
+    var form = document.querySelector('form');
+    var input = document.querySelector('#user-todo');
+    var todosArray = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
+    localStorage.setItem('todos', JSON.stringify(todosArray));
+   
+
+    var myData = {forms:form, inputs:input};
+
+    // form.addEventListener('submit', function(e) {
+    //     e.preventDefault();
+    //     todoMaker(input.value);
+    //     todosArray.push(input.value);
+    //     localStorage.setItem('todos', JSON.stringify(todosArray));
+    //     input.value = '';
+    // });
+
+   
+}
+
 
 var storage = JSON.parse(localStorage.getItem('todos'));
 
+var toDoList = document.querySelector('ul');
+var clearButton = document.getElementById('clear');
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    todoMaker(input.value);
-    todosArray.push(input.value);
-    localStorage.setItem('todos', JSON.stringify(todosArray));
-    input.value = '';
-});
 
 var todoMaker = function(text) {
 var todo = document.createElement('li');

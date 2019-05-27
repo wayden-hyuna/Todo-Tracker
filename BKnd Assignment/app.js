@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 var file_path = path.join(__dirname, './index.html');
@@ -12,23 +13,30 @@ app.get('/', (req, res) => {
 
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/javascript'));
-app.use(express.static(__dirname + '/public/'));
-app.use(express.static(__dirname + '/img'));
 app.use(express.static(__dirname));
+app.use(bodyParser.urlencoded({extended: true}));
 
+app.post('/submit', submitForm);
 
-app.get('/api/courses', (req, res) =>{
-    res.send([1, 2, 3]);
-});
+function submitForm(req, res){
+    
+    var data = req.body;
+    var form = data.form;
+    var input = data.input;
+    
+    // form.addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         todoMaker(input.value);
+    //         todosArray.push(input.value);
+    //         localStorage.setItem('todos', JSON.stringify(todosArray));
+    //         input.value = '';
+    //     });
+    res.send(data);
 
-app.get('/api/courses/:id', (req,res)=>{
-
-    res.send(req.params.id);
-
-})
+}
 
 // PORT
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, () => console.log(`Gator listening on port ${port}...`));
 
 
