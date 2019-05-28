@@ -3,39 +3,66 @@ const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 var file_path = path.join(__dirname, './index.html');
-
+var todosArray = [];
 
 app.get('/', (req, res) => {
     res.sendFile(file_path);
 });
 
+class Todo{
+
+   
+    constructor(title, description)
+    {
+        this.title = title;
+        this.description = description;
+        this.status = "status";
+        this.created = new Date();
+        this.completed = "yy/mm/dd";
+
+    }
+
+}
 
 
+
+//middleware/////////////////////////////////////////////////////////////////////////
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/javascript'));
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/submit', submitForm);
+//request handlers/////////////////////////////////////////////////////////////
 
-function submitForm(req, res){
+app.post('/submit', (req, res) => {
     
     var data = req.body;
-    var form = data.form;
-    var input = data.input;
+    var myTodo = new Todo(data.title, data.description);
+    todosArray.push(myTodo);
+    res.send(todosArray);
+
+});
+
+app.get('/refresh', (req,res) =>{
+
+    res.send(todosArray);
+
+});
+
+
+app.post('/clearAll', (req, res) => {
     
-    // form.addEventListener('submit', function(e) {
-    //         e.preventDefault();
-    //         todoMaker(input.value);
-    //         todosArray.push(input.value);
-    //         localStorage.setItem('todos', JSON.stringify(todosArray));
-    //         input.value = '';
-    //     });
-    res.send(data);
+    todosArray = [];
+    res.send(todosArray);
 
-}
 
-// PORT
+});
+
+
+
+
+
+// PORT//////////////////////////////////////////////////////////////////////
 const port = 3000;
 app.listen(port, () => console.log(`Gator listening on port ${port}...`));
 

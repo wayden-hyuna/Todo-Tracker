@@ -3,36 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
 
-
+  
     <title>Todo Tracker</title>
 
-
+   
+<script>var todoArray = [];</script>
 
 </head>
-<body class="container-fluid">
+<body onload="doRefresh()" class="container-fluid">
         <h1 id="title">Todo Tracker</h1>
 <br>
-        <form>
+        <form method="POST" action="/submit" id="form">
             <div class="form-group col-sm-3">
                 <input  type="text" class="form-control" name="userTodo" aria-describedby="user-todo" id="user-todo" placeholder="New Todo" required/>
-                <button onclick="submitForm()" class="btn btn-primary">Submit</button> 
+                <br>
+            </div>
+            <div class="form-group col-sm-6">
+                <textarea type="text" class="form-control" name="userTodoDescription" aria-describedby="user-todo-description" id="user-todo-description" placeholder="Description" required></textarea>
+            </div>
+            <div class="form-group col-sm-3">
+               <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit-button">
             </div>
         </form>
-      
+
+
+        <br></br>
         <h2 id="todo-header">Todos</h2>
         <div class="form-group col-sm-3">
-        <ul class="list-group">
-      
-        </ul>
-      </div>
+        <ul class="list-group" id="todo-list">
 
-        <button type="button" class="btn btn-warning" id="clear">Clear All</button>
+        </ul>
+      </div> var todo = document.createElement('li');
+      todo.textContent = element.title;
+      toDoList.appendChild(todo);
+        <button class="btn btn-warning" id="clear">Clear All</button>
 
 </body>
-<script src="Todo.js"></script>
+
+<script>
+
+
+
+form.addEventListener('submit', function(e) {
+    
+    e.preventDefault();
+
+    var form = document.querySelector('form');
+    var toDoList = document.querySelector('ul');
+    var clear = document.getElementById('clear');
+    var refresh = document.getElementById('refresh');
+    var title = document.querySelector('#user-todo');
+    var description = document.querySelector('#user-todo-description');
+    var myTitle = title.value;
+    var myDescription = description.value;
+    
+
+    
+    $.ajax({
+        type: 'POST',
+        url: `http://localhost:3000/submit`,
+        data: {"title": myTitle, "description": myDescription},
+        dataType: "text",
+        success: function(result){
+
+            todoArray = JSON.parse(result); 
+
+                while (toDoList.firstChild) {
+                    toDoList.removeChild(toDoList.firstChild);
+                }
+                
+
+                //alert(todoArray[0].title); 
+                todoArray.forEach(element => {
+                    var todo = document.createElement('li');
+                    todo.textContent = element.title;
+                    toDoList.appendChild(todo);
+                });            
+
+        }
+    });
+
+    
+ 
+    title.value = description.value = '';
+  
+
+});
+
+
+
+clear.addEventListener('click', function(e) {
+    
+    e.preventDefault();
+
+    var form = document.querySelector('form');
+    var toDoList = document.querySelector('ul');
+    var clear = document.getElementById('clear');
+    var refresh = document.getElementById('refresh');
+    var title = document.querySelector('#user-todo');
+    var description = document.querySelector('#user-todo-description');
+    var myTitle = title.value;
+    var myDescription = description.value;
+    lue="0"
+
+    
+    $.ajax({
+        type: 'POST',
+        url: `http://localhost:3000/clearAll`,
+        data: {},
+        dataType: "text",
+        success: function(result){
+
+            todoArray = JSON.parse(result); 
+
+                while (toDoList.firstChild) {
+                    toDoList.removeChild(toDoList.firstChild);
+                }
+                
+                //alert(todoArray[0].title); 
+
+                for(var i = 0; i < todoArray.length; i++){
+
+                    var todo = document.createElement('li');
+                    todo.textContent = todoArray[i].title;
+                    todo.setAttribute("id", `list-item-${i}`);
+                    toDoList.appendChild(todo);
+                }
+
+               
+        }
+    });
+
+    title.value = description.value = '';  
+
+});
+
+
+
+
+
+
+function doRefresh() {
+    
+
+    var form = document.querySelector('form');
+    var toDoList = document.querySelector('ul');
+    var clear = document.getElementById('clear');
+    var refresh = document.getElementById('refresh');
+    var title = document.querySelector('#user-todo');
+    var description = document.querySelector('#user-todo-description');
+    var myTitle = title.value;
+    var myDescription = description.value;
+    
+
+    
+    $.ajax({
+        type: 'GET',
+        url: `http://localhost:3000/refresh`,
+        data: {},
+        dataType: "text",
+        success: function(result){
+
+            todoArray = JSON.parse(result); 
+
+                while (toDoList.firstChild) {
+                    toDoList.removeChild(toDoList.firstChild);
+                }
+                
+
+                //alert(todoArray[0].title); 
+                todoArray.forEach(element => {
+                    var todo = document.createElement('li');
+                    todo.textContent = element.title;
+                    toDoList.appendChild(todo);
+                });            
+
+        }
+    });
+
+}
+
+    
+   
+
+</script>
 </html>
