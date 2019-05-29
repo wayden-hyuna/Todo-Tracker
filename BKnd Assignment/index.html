@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="BKnd Assignment/node_modules/handlebars/dist/handlebars.js"></script>
+    
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -34,27 +36,37 @@
 
         <br></br>
         <h2 id="todo-header">Todos</h2>
-        <div class="form-group col-sm-3">
-        <ul class="list-group" id="todo-list">
 
-        </ul>
-      </div> var todo = document.createElement('li');
-      todo.textContent = element.title;
-      toDoList.appendChild(todo);
+        <div class="form-group col-sm-3">
+            <section id="todo-list">
+                <article class="white-panel">
+                    <h4><a href="#">Title 1</a></h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis 
+                        nostrud exercitation ullamco laboris nisi ut aliquip
+                        ex ea commodo consequat. Duis aute
+                    </p>
+                </article>                
+            </section>
+        </div>
+   
         <button class="btn btn-warning" id="clear">Clear All</button>
 
 </body>
 
 <script>
 
-
+// view-source:https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm#
+//https://www.w3schools.com/w3css/w3css_templates.asp
 
 form.addEventListener('submit', function(e) {
     
     e.preventDefault();
 
     var form = document.querySelector('form');
-    var toDoList = document.querySelector('ul');
+    var toDoList = document.getElementById('todo-list');
     var clear = document.getElementById('clear');
     var refresh = document.getElementById('refresh');
     var title = document.querySelector('#user-todo');
@@ -80,7 +92,8 @@ form.addEventListener('submit', function(e) {
 
                 //alert(todoArray[0].title); 
                 todoArray.forEach(element => {
-                    var todo = document.createElement('li');
+                    var mySection = document.createElement('section');
+                    var myArticle
                     todo.textContent = element.title;
                     toDoList.appendChild(todo);
                 });            

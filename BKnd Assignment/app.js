@@ -1,4 +1,5 @@
 const express = require('express');
+const Joi = require('joi');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
@@ -12,8 +13,9 @@ app.get('/', (req, res) => {
 class Todo{
 
    
-    constructor(title, description)
+    constructor(myID, title, description)
     {
+        this.id = myID;
         this.title = title;
         this.description = description;
         this.status = "status";
@@ -28,7 +30,7 @@ class Todo{
 
 //middleware/////////////////////////////////////////////////////////////////////////
 app.use(express.static(__dirname + '/css'));
-app.use(express.static(__dirname + '/javascript'));
+app.use(express.static(__dirname + '/img'));
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -36,11 +38,26 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/submit', (req, res) => {
     
-    var data = req.body;
-    var myTodo = new Todo(data.title, data.description);
-    todosArray.push(myTodo);
-    res.send(todosArray);
+    const schema = {
+       
+        title: Joi.string().min(1).required(),
+        description: Joi.string().max(250).required()
+        
+    };
+//VALIDATION ///////////////////////////////////////////////////////////////////////////
+    const result = Joi.validate(req.body, schema);
 
+    if(result.error){
+        res.status(400).send(result.error.details[0].message);
+    }
+    else
+/////////////////////////////////////////////////////////////////////////////////////////
+    {
+        var data = req.body;
+        var myTodo = new Todo(todosArray.length+1, data.title, data.description);
+        todosArray.push(myTodo);
+        res.send(todosArray);
+    }
 });
 
 app.get('/refresh', (req,res) =>{
