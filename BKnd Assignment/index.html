@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="BKnd Assignment/node_modules/handlebars/dist/handlebars.js"></script>
-    
+    <script src="node_modules/handlebars/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
-
+    <style>
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+        .w3-bar-block .w3-bar-item {padding:20px}
+    </style>
+        
   
     <title>Todo Tracker</title>
 
@@ -37,19 +42,17 @@
         <br></br>
         <h2 id="todo-header">Todos</h2>
 
-        <div class="form-group col-sm-3">
-            <section id="todo-list">
-                <article class="white-panel">
-                    <h4><a href="#">Title 1</a></h4>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis 
-                        nostrud exercitation ullamco laboris nisi ut aliquip
-                        ex ea commodo consequat. Duis aute
-                    </p>
-                </article>                
-            </section>
+        <div class="w3-row-padding w3-padding-16 w3-center" id="todo-list">
+
+
+            <div class="w3-quarter">
+                <h6>date/time</h6>
+                <h3>My todo title</h3>
+                <p>The todo Description</p>
+            </div>
+
+
+
         </div>
    
         <button class="btn btn-warning" id="clear">Clear All</button>
@@ -59,7 +62,7 @@
 <script>
 
 // view-source:https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm#
-//https://www.w3schools.com/w3css/w3css_templates.asp
+// https://www.w3schools.com/w3css/w3css_templates.asp
 
 form.addEventListener('submit', function(e) {
     

@@ -5,6 +5,7 @@ const app = express();
 const path = require('path');
 var file_path = path.join(__dirname, './index.html');
 var todosArray = [];
+const hbs = require('express-handlebars');
 
 app.get('/', (req, res) => {
     res.sendFile(file_path);
@@ -26,6 +27,9 @@ class Todo{
 
 }
 
+app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views'}));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
 
 //middleware/////////////////////////////////////////////////////////////////////////
