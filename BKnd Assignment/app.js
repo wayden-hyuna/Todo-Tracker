@@ -7,9 +7,7 @@ var file_path = path.join(__dirname, './index.html');
 var todosArray = [];
 const hbs = require('express-handlebars');
 
-app.get('/', (req, res) => {
-    res.sendFile(file_path);
-});
+
 
 class Todo{
 
@@ -19,7 +17,7 @@ class Todo{
         this.id = myID;
         this.title = title;
         this.description = description;
-        this.status = "status";
+        this.status = "To Do";
         this.created = new Date();
         this.completed = "yy/mm/dd";
 
@@ -27,29 +25,40 @@ class Todo{
 
 }
 
-app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views'}));
+app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts'}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 
 //middleware/////////////////////////////////////////////////////////////////////////
+
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/img'));
+app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/js'));
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
 
 //request handlers/////////////////////////////////////////////////////////////
 
+app.get('/', (req, res) => {
+
+    res.render('index', { anyArray: todosArray});
+
+});
+
+
 app.post('/submit', (req, res) => {
-    
+
+    var data = req.body;
     const schema = {
        
-        title: Joi.string().min(1).required(),
+        title: Joi.string().min(3).required(),
         description: Joi.string().max(250).required()
         
     };
 //VALIDATION ///////////////////////////////////////////////////////////////////////////
-    const result = Joi.validate(req.body, schema);
+    const result = Joi.validate(data, schema);
 
     if(result.error){
         res.status(400).send(result.error.details[0].message);
@@ -57,20 +66,17 @@ app.post('/submit', (req, res) => {
     else
 /////////////////////////////////////////////////////////////////////////////////////////
     {
-        var data = req.body;
+       
         var myTodo = new Todo(todosArray.length+1, data.title, data.description);
         todosArray.push(myTodo);
         res.send(todosArray);
     }
+
+
+    
 });
 
-app.get('/refresh', (req,res) =>{
-
-    res.send(todosArray);
-
-});
-
-
+//CLEAR-ALL//////////////////////////////////////////////////////////////////////////////
 app.post('/clearAll', (req, res) => {
     
     todosArray = [];
@@ -80,7 +86,29 @@ app.post('/clearAll', (req, res) => {
 });
 
 
+//DELETE-ONE////////////////////////////////////////////////////////////////////////////
 
+app.get('/delete', (req,res) => {
+
+    var data = req.query;
+    var remID = data.delID - 1;
+    todosArray.splice(remID,1);
+    res.send(todosArray);
+
+});
+
+//EDIT-ONE////////////////////////////////////////////////////////////////////////////
+
+app.post('/edit', (req,res) => {
+
+    var data = req.query;
+    var dataID = data.editID;
+    var dataObject = data.myObj; 
+    todosArray[dataID] = dataObject;
+    res.send(data);
+
+
+});
 
 
 // PORT//////////////////////////////////////////////////////////////////////

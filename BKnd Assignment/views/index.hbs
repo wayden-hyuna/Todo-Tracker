@@ -1,0 +1,66 @@
+ <h1 id="title">Todo Tracker</h1>
+<br />
+        <form method="POST" action="/submit" id="form">
+            <div class="form-group col-sm-3">
+                <input  type="text" class="form-control" name="userTodo" aria-describedby="user-todo" id="user-todo" placeholder="New Todo" required/>
+                <br>
+            </div>
+            <div class="form-group col-sm-6">
+                <textarea type="text" class="form-control" name="userTodoDescription" aria-describedby="user-todo-description" id="user-todo-description" placeholder="Description" required></textarea>
+            </div>
+            <div class="form-group col-sm-3">
+               <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit-button">
+            </div>
+        </form>
+
+
+
+
+        <br></br>
+        <h2 id="todo-header">Todos</h2>
+        <div class="w3-row-padding w3-padding-16 w3-center " id="todoList">
+  
+            
+                
+
+        
+        </div>
+
+        <script type="text/x-handlebars-template" id="todo-template" >
+
+           
+                {{#each anyArray}}
+
+
+             <div id="{{this.id}}" class="w3-quarter todobox col-sm-3 container ">
+                 <br>
+                <button onclick="deleteOne({{this.id}});" class="fa fa-close btn btn-outline-danger btn-circle" style="color:red"></button>
+                <button onclick="editOne({{this.id}});" class="	fas fa-edit btn btn-warning btn-circle" style="color:red"></button>
+                <br></br>
+                <h6>{{this.created}}</h6>
+                <h3>{{this.title}}</h3>
+                <p>{{this.description}}</p>
+                <br>
+                <h6 id="statusTxt">{{this.status}}</h6>
+            </div>
+
+
+
+
+
+                {{/each}}
+           
+        </script>
+
+
+        <script type="text/javascript">
+
+            var todoInfo = document.getElementById("todo-template").innerHTML;
+            var template = Handlebars.compile(todoInfo);
+            var todoList = template();
+            document.getElementById("todoList").innerHTML += todoList;
+        
+        </script> 
+        
+
+        <button class="btn btn-warning" id="clear">Clear All</button>
