@@ -2,8 +2,10 @@
 
     var form = document.querySelector('form');
     var clear = document.getElementById('clear');
+    var edit = document.getElementById('modalSubmit');
     var title = document.querySelector('#user-todo');
     var description = document.querySelector('#user-todo-description');
+    var optradio = document.getElementsByName('optradio');
     var myTitle = title.value;
     var myDescription = description.value;
 
@@ -51,7 +53,6 @@ clear.addEventListener('click', function(e) {
         dataType: "text",
         success: function(result){
 
-            todoArray = JSON.parse(result);
             location.reload(); 
                
         }
@@ -61,6 +62,33 @@ clear.addEventListener('click', function(e) {
 
 });
 
+function editMiddle (id)  {
+
+
+    var optradio = document.getElementsByName('optradio'+id);
+    var myNewDescription = document.getElementById(`modal-todo-description`+id).value;
+    var status = " ";
+
+    for(var i = 0; i < optradio.length; i++){
+        if(optradio[i].checked){
+            status = optradio[i].value;
+        }
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: `http://localhost:3000/edit`,
+        data: {dataID: id, newStatus: status, newDescription: myNewDescription},
+        dataType: "text",
+        success: function(result){
+
+            todoArray = JSON.parse(result);
+            location.reload(); 
+               
+        }
+    });
+    
+}
 
 function deleteOne(id){
 
@@ -79,28 +107,14 @@ function deleteOne(id){
 
 }
 
-function editMiddle(id){
-   
-   
-   editOne(id, object);
-}
 
-function editOne(id, object){
+modalSubmit.addEventListener('click', function(e) {
+    
+    e.preventDefault();
 
-    $.ajax({
-        type: 'POST',
-        url: `http://localhost:3000/edit`,
-        data: {editID: id, myObj: JSON.stringify(object)},
-        dataType: "text",
-        success: function(result){
 
-            todoArray = JSON.parse(result);
-            //location.reload(); 
-               
-        }
-    });
 
-}
+});
 
 
 

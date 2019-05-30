@@ -19,7 +19,7 @@ class Todo{
         this.description = description;
         this.status = "To Do";
         this.created = new Date();
-        this.completed = "yy/mm/dd";
+        this.completed;
 
     }
 
@@ -51,29 +51,19 @@ app.get('/', (req, res) => {
 app.post('/submit', (req, res) => {
 
     var data = req.body;
-    const schema = {
-       
-        title: Joi.string().min(3).required(),
-        description: Joi.string().max(250).required()
-        
-    };
-//VALIDATION ///////////////////////////////////////////////////////////////////////////
-    const result = Joi.validate(data, schema);
-
-    if(result.error){
-        res.status(400).send(result.error.details[0].message);
-    }
-    else
-/////////////////////////////////////////////////////////////////////////////////////////
+    if(data.title == undefined)
     {
+        console.log('this is data: ' + data)
        
+    }
+
+    else
+    {    
         var myTodo = new Todo(todosArray.length+1, data.title, data.description);
         todosArray.push(myTodo);
         res.send(todosArray);
     }
-
-
-    
+ 
 });
 
 //CLEAR-ALL//////////////////////////////////////////////////////////////////////////////
@@ -101,12 +91,21 @@ app.get('/delete', (req,res) => {
 
 app.post('/edit', (req,res) => {
 
-    var data = req.query;
-    var dataID = data.editID;
-    var dataObject = data.myObj; 
-    todosArray[dataID] = dataObject;
-    res.send(data);
+    var data = req.body;
 
+   
+        console.log(data);
+        var dataID = parseInt(data.dataID) - 1;
+        todosArray[dataID].description = data.newDescription;
+        todosArray[dataID].status = data.newStatus;
+        if(data.newStatus == "Done")
+            todosArray[dataID].completed  = new Date();
+        console.log('/////////////////////////////////////////////\n')
+        console.log(todosArray[dataID]);
+        console.log('/////////////////////////////////////////////\n')
+        console.log(todosArray);
+        res.send(true);
+ 
 
 });
 
